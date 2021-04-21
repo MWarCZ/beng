@@ -17,6 +17,10 @@ $breakpoint: 800px;
   --default-bg-color: #fff;
   --footer-bg-color : #f9dfdd;
 
+  /* Link */
+  --link-fg-color      : var(--default-fg-color);
+  --link-hover-fg-color: #da4338;
+
   /* Component Menu */
   --menu-fg-color       : var(--default-fg-color);
   --menu-fg-active-color: #da4338;
@@ -56,6 +60,18 @@ h2 {
   font-size: 36px;
 }
 
+/* Link */
+a[href] {
+  color: var(--link-fg-color);
+
+  text-underline-offset: 2px;
+
+  &:hover,
+  &:focus {
+    --link-fg-color: var(--link-hover-fg-color);
+  }
+}
+
 /* Layout */
 .layout {
   display: grid;
@@ -64,16 +80,18 @@ h2 {
   grid-template-areas  :
     "menu"
     "main"
-    "news"
-    "newsletter";
+    "news";
+  grid-gap : 2rem;
+  padding  : 1.5rem 1rem 0 1rem;
+  max-width: 1150px;
+  margin   : auto;
 
   @media (min-width: $breakpoint) {
     grid-template-columns: min-content 1fr;
     grid-template-rows   : max-content min-content auto;
     grid-template-areas  :
       "menu       main"
-      "news       main"
-      "newsletter newsletter";
+      "news       main";
   }
 
   &__menu {
@@ -114,22 +132,24 @@ h2 {
   }
 
   &__item {
-    padding      : 0.3rem 0;
+    // padding      : 0.3rem 0;
     border-bottom: 0.1rem solid var(--menu-underline-color);
-    font-size    : 0.85em;
 
     a {
+      --link-fg-color: var(--menu-fg-color);
       display        : block;
       text-decoration: none;
-      color          : var(--menu-fg-color);
-      text-shadow    : 0 0 1px var(--menu-fg-color);
+      padding        : 0.3rem 0;
+      // color       : var(--menu-fg-color);
+      font-size      : 0.8em;
+      text-shadow    : 0 0 0 var(--menu-fg-color);
     }
 
     &.is-active,
     &:hover,
     &:focus {
       a {
-        --menu-fg-color: var(--menu-fg-active-color);
+        --link-fg-color: var(--menu-fg-active-color);
       }
     }
   }
@@ -149,8 +169,45 @@ h2 {
     }
   }
 
-  a {
-    color: var(--breadcrumbs-fg-color);
+  a:not(:hover) {
+    --link-fg-color: var(--breadcrumbs-fg-color);
+  }
+}
+
+/* Component News */
+.news {
+  position: relative;
+  width   : 14.75rem;
+  margin  : 0.9rem 1rem;
+
+  &__date {
+    position   : absolute;
+    background : #fff;
+    padding    : 0 0.5rem 0.4rem 0;
+    text-shadow: 0 0 1px currentColor;
+    z-index    : 1;
+
+    &::before {
+      content         : "";
+      display         : block;
+      background-color: currentColor;
+      height          : 0.3rem;
+      margin-bottom   : 0.1rem;
+      margin-top      : -1px;
+    }
+  }
+
+  &__image {
+    width    : 100%;
+    /* filter: brightness(1.1) contrast(0.9); */
+  }
+
+  &__caption {
+    background : var(--news-caption-bg-color, #df0000a0);
+    color      : var(--news-caption-fg-color, #fff);
+    padding    : .9em;
+    transform  : translate(0.6rem, -1.4em);
+    text-shadow: 0 0 2px currentColor;
   }
 }
 
@@ -190,6 +247,7 @@ h2 {
 /* TMP */
 .carousel {
   img {
-    width: 100%;
+    width : 100%;
+    height: auto;
   }
 }
