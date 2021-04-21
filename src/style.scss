@@ -17,6 +17,11 @@ $breakpoint: 800px;
   --default-bg-color: #fff;
   --footer-bg-color : #f9dfdd;
 
+  /* Component Menu */
+  --menu-fg-color       : var(--default-fg-color);
+  --menu-fg-active-color: #da4338;
+  --menu-underline-color: #cdcdcd;
+
   /* Component News */
   --news-caption-fg-color : #fdf6f5;
   --news-caption-bg-color : #da1717b0;
@@ -96,6 +101,37 @@ h2 {
 
   &__newsletter {
     grid-area: newsletter;
+  }
+}
+
+/* Component Menu */
+.menu {
+  padding: 0 1rem;
+
+  &__container {
+    list-style: none;
+    padding   : 0;
+  }
+
+  &__item {
+    padding      : 0.3rem 0;
+    border-bottom: 0.1rem solid var(--menu-underline-color);
+    font-size    : 0.85em;
+
+    a {
+      display        : block;
+      text-decoration: none;
+      color          : var(--menu-fg-color);
+      text-shadow    : 0 0 1px var(--menu-fg-color);
+    }
+
+    &.is-active,
+    &:hover,
+    &:focus {
+      a {
+        --menu-fg-color: var(--menu-fg-active-color);
+      }
+    }
   }
 }
 
