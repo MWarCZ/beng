@@ -118,6 +118,22 @@ h2 {
   }
 }
 
+/* Footer */
+.footer {
+  text-align      : center;
+  background-color: var(--footer-bg-color);
+  padding         : 6rem 1rem 6rem;
+
+  // /* TMP */
+  // max-width: 80em;
+  // &__image {}
+  &__title {
+    margin     : 0.5em 0;
+    font-weight: normal;
+    text-shadow: 1px 1px 1px black;
+  }
+}
+
 /* TMP */
 .carousel {
   img {
