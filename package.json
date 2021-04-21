@@ -1,0 +1,22 @@
+{
+  "name": "beng",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "$npm_execpath run clean; $npm_execpath run cp.src; $npm_execpath run build.sass; $npm_execpath run cp.static;",
+    "build.sass": "sass --style=expanded --no-charset src:dist",
+    "build.sass.watch": "$npm_execpath run build.sass -- -w",
+    "cp.src.watch": "$npm_execpath run cp.src -- -w",
+    "cp.src": "cpx -v \"src/**/*.{html,js}\" dist",
+    "cp.static": "cpx -v \"static/**/*\" dist",
+    "clean": "del dist/",
+    "clean.node": "del -f node_modules/"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "cpx": "^1.5.0",
+    "del-cli": "^3.0.1",
+    "sass": "^1.32.11"
+  }
+}
