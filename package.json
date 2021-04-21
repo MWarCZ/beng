@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "$npm_execpath run clean; $npm_execpath run cp.src; $npm_execpath run build.sass; $npm_execpath run cp.static;",
-    "build.sass": "sass --style=expanded --no-charset src:dist",
+    "build.sass": "sass --style=expanded --no-charset --no-source-map src:dist",
     "build.sass.watch": "$npm_execpath run build.sass -- -w",
     "cp.src.watch": "$npm_execpath run cp.src -- -w",
     "cp.src": "cpx -v \"src/**/*.{html,js}\" dist",

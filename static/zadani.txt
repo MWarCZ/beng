@@ -1,0 +1,12 @@
+ZADÁNÍ
+
+Prosím, vytvoøte HTML šablonu na základì náhledu 1:1.
+CSS styly definujte v samostatném souboru.
+
+Zpracujte, prosím, i responzivní design. 
+Levý sloupec (menu + aktuality) postaèí skrýt a zobrazovat pouze obsahovou èást a èást pro pøihlášení k newsletteru.  
+
+Použitý font: TriviaSansRegular.
+Velikost písma: 17px.
+Velikost nadpisu: 36px.
+ 
