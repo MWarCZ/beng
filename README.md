@@ -4,7 +4,7 @@
 
 - Využívám SASS (Pokud to nevadí),
   - Ale v adresáři `dist` je hezky čitelný výstup v CSS
-
+- Provizorně je web dostupná na mém serveru na adrese: [http://kangaroo.tenvalka.eu/](http://kangaroo.tenvalka.eu/)
 
 ## Nastaveni projektu
 
