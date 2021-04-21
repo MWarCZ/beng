@@ -40,6 +40,11 @@ $breakpoint : 800px;
 
   /* Component Breadcrumbs */
   --breadcrumbs-fg-color: var(--default-fg-color);
+
+  /* Component Carousel */
+  --carousel-color       : #c0c0c0;
+  --carousel-select-color: #404040;
+
 }
 
 *,
@@ -209,6 +214,9 @@ a[href] {
   // width: 14.75rem;
   margin  : 0.9rem 1rem;
 
+  &:hover {
+    filter: drop-shadow(2px 4px 6px black);
+  }
 
   &__date {
     position   : absolute;
@@ -257,6 +265,8 @@ a[href] {
 
   &:hover {
     --link-hover-fg-color: var(--subscribe-btn-fg-color);
+
+    box-shadow: 2px 4px 6px black;
   }
 
   &::after {
@@ -290,6 +300,10 @@ a[href] {
     margin     : 0;
     padding    : 0.5rem 0;
 
+    &:hover {
+      filter: contrast(0);
+    }
+
     // &__image {}
   }
 }
@@ -322,10 +336,37 @@ a[href] {
   }
 }
 
-/* TMP */
+/* Component Carousel */
 .carousel {
+  position      : relative;
+  display       : flex;
+  flex-direction: column;
+
   img {
     width : 100%;
     height: auto;
+  }
+
+  &__nav {
+
+    text-align: center;
+
+    &__item {
+      display        : inline-block;
+      width          : 1rem;
+      height         : 1rem;
+      border         : 0.25rem solid transparent;
+      background-clip: content-box;
+
+      --color         : #c0c0c0;
+      --selected-color: #404040;
+      background-color: var(--carousel-color);
+      border-radius   : 50%;
+      font-size       : 0;
+
+      &.selected {
+        --carousel-color: var(--carousel-select-color);
+      }
+    }
   }
 }
