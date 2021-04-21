@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'TriviaSansRegular';
+  src        : url('/font/TriviaSansRegular.woff') format('woff');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'TriviaSansRegular';
+  src        : url('/font/TriviaSansRegular-Bold.woff') format('woff');
+  font-weight: bold;
+}
+
+:root {
+  --default-fg-color: #222222;
+  --default-bg-color: #fff;
+  --footer-bg-color : #f9dfdd;
+
+  /* Component: News */
+  --news-caption-fg-color : #fdf6f5;
+  --news-caption-bg-color : #da1717b0;
+  /* Component            : SubscribeBtn */
+  --subscribe-btn-fg-color: #eeeeee;
+  --subscribe-btn-bg-color: #d52b1e;
+
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin        : 0;
+  padding       : 0;
+  font-family   : TriviaSansRegular;
+  // font-family: TriviaSansRegular, Avenir, Helvetica, Arial, sans-serif;
+
+  font-size       : 17px;
+  color           : var(--default-fg-color, #222222);
+  background-color: var(--default-bg-color, #fff);
+}
+
+h1,
+h2 {
+  font-size: 36px;
+}
