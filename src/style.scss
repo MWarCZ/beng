@@ -10,15 +10,17 @@
   font-weight: bold;
 }
 
+$breakpoint: 800px;
+
 :root {
   --default-fg-color: #222222;
   --default-bg-color: #fff;
   --footer-bg-color : #f9dfdd;
 
-  /* Component: News */
+  /* Component News */
   --news-caption-fg-color : #fdf6f5;
   --news-caption-bg-color : #da1717b0;
-  /* Component            : SubscribeBtn */
+  /* Component SubscribeBtn */
   --subscribe-btn-fg-color: #eeeeee;
   --subscribe-btn-bg-color: #d52b1e;
 
@@ -45,4 +47,80 @@ body {
 h1,
 h2 {
   font-size: 36px;
+}
+
+/* Layout */
+.layout {
+  display: grid;
+
+  grid-template-columns: 1fr;
+  grid-template-areas  :
+    "menu"
+    "main"
+    "news"
+    "newsletter";
+
+  @media (min-width: $breakpoint) {
+    background-color: red;
+
+    grid-template-columns: min-content 1fr;
+    grid-template-rows   : max-content min-content auto;
+    grid-template-areas  :
+      "menu       main"
+      "news       main"
+      "newsletter newsletter";
+  }
+
+  &__menu {
+    grid-area: menu;
+  }
+
+  &__news {
+    grid-area: news;
+
+    display       : flex;
+    flex-direction: row;
+
+    max-width: 100vw;
+    overflow : auto;
+
+    @media (min-width: $breakpoint) {
+      flex-direction: column;
+
+    }
+  }
+
+  &__main {
+    grid-area: main;
+  }
+
+  &__newsletter {
+    grid-area: newsletter;
+  }
+}
+
+/* Component SubscribeBtn */
+.subscribe-btn {
+  display         : inline-block;
+  background-color: var(--subscribe-btn-bg-color);
+  margin          : .5rem;
+  padding         : 0.6em 1.3em;
+
+  color          : var(--subscribe-btn-fg-color);
+  font-size      : 1.1em;
+  letter-spacing : 0.2px;
+  text-decoration: none;
+
+  &::after {
+    // « »
+    content: ' »';
+    color  : #000;
+  }
+}
+
+/* TMP */
+.carousel {
+  img {
+    width: 100%;
+  }
 }
