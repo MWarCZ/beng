@@ -53,6 +53,7 @@ body {
   font-size       : 17px;
   color           : var(--default-fg-color, #222222);
   background-color: var(--default-bg-color, #fff);
+  line-height     : 1.5em;
 }
 
 h1,
@@ -74,24 +75,26 @@ a[href] {
 
 /* Layout */
 .layout {
-  display: grid;
+  & {
+    display: grid;
 
-  grid-template-columns: 1fr;
-  grid-template-areas  :
-    "menu"
-    "main"
-    "news";
-  grid-gap : 2rem;
-  padding  : 1.5rem 1rem 0 1rem;
-  max-width: 1150px;
-  margin   : auto;
-
-  @media (min-width: $breakpoint) {
-    grid-template-columns: min-content 1fr;
-    grid-template-rows   : max-content min-content auto;
+    grid-template-columns: 1fr;
     grid-template-areas  :
-      "menu       main"
-      "news       main";
+      "menu"
+      "main"
+      "news";
+    grid-gap : 2rem;
+    padding  : 1.5rem 1rem 0 1rem;
+    max-width: 1265px;
+    margin   : auto;
+
+    @media (min-width: $breakpoint) {
+      grid-template-columns: min-content 1fr;
+      grid-template-rows   : max-content min-content auto;
+      grid-template-areas  :
+        "menu       main"
+        "news       main";
+    }
   }
 
   &__menu {
@@ -115,6 +118,18 @@ a[href] {
 
   &__main {
     grid-area: main;
+
+    display       : flex;
+    flex-direction: column;
+
+    // &__header {}
+    &__body {
+      flex-grow: 1;
+    }
+
+    &__footer {
+      padding: 1em 0;
+    }
   }
 
   &__newsletter {
@@ -145,11 +160,16 @@ a[href] {
       text-shadow    : 0 0 0 var(--menu-fg-color);
     }
 
-    &.is-active,
+    &.is-active {
+      a {
+        --link-fg-color: var(--menu-fg-active-color);
+      }
+    }
+
     &:hover,
     &:focus {
       a {
-        --link-fg-color: var(--menu-fg-active-color);
+        --link-hover-fg-color: var(--menu-fg-active-color);
       }
     }
   }
@@ -198,7 +218,8 @@ a[href] {
   }
 
   &__image {
-    width    : 100%;
+    width: auto;
+
     /* filter: brightness(1.1) contrast(0.9); */
   }
 
@@ -218,10 +239,14 @@ a[href] {
   margin          : .5rem;
   padding         : 0.6em 1.3em;
 
-  color          : var(--subscribe-btn-fg-color);
+  --link-fg-color: var(--subscribe-btn-fg-color);
   font-size      : 1.1em;
   letter-spacing : 0.2px;
   text-decoration: none;
+
+  &:hover {
+    --link-hover-fg-color: var(--subscribe-btn-fg-color);
+  }
 
   &::after {
     // « »
@@ -242,6 +267,32 @@ a[href] {
     font-weight: normal;
     text-shadow: 1px 1px 1px black;
   }
+}
+
+/* Component Contact */
+.contact {
+  font-style: normal;
+
+  &__media {
+    display    : inline-block;
+    line-height: 0;
+    margin     : 0;
+    padding    : 0.75rem 0;
+
+    // &__image {}
+  }
+}
+
+/* BackBtn */
+.back-btn {
+  &::before {
+    content: '« ';
+  }
+}
+
+/* MainContent */
+.main-content {
+  h1 {}
 }
 
 /* TMP */
