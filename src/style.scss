@@ -1,3 +1,4 @@
+/* Pro text */
 @font-face {
   font-family: 'TriviaSansRegular';
   src        : url('/font/TriviaSansRegular.woff') format('woff');
@@ -10,7 +11,11 @@
   font-weight: bold;
 }
 
-$breakpoint: 800px;
+/* Pro nadpis hlavního obsahu */
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+$breakpoint : 800px;
 
 :root {
   --default-fg-color: #222222;
@@ -47,7 +52,7 @@ html,
 body {
   margin        : 0;
   padding       : 0;
-  font-family   : TriviaSansRegular;
+  font-family   : 'TriviaSansRegular', sans-serif;
   // font-family: TriviaSansRegular, Avenir, Helvetica, Arial, sans-serif;
 
   font-size       : 17px;
@@ -71,6 +76,10 @@ a[href] {
   &:focus {
     --link-fg-color: var(--link-hover-fg-color);
   }
+}
+
+.no-underline {
+  text-decoration: none !important;
 }
 
 /* Layout */
@@ -197,8 +206,9 @@ a[href] {
 /* Component News */
 .news {
   position: relative;
-  width   : 14.75rem;
+  // width: 14.75rem;
   margin  : 0.9rem 1rem;
+
 
   &__date {
     position   : absolute;
@@ -231,6 +241,7 @@ a[href] {
     text-shadow: 0 0 2px currentColor;
   }
 }
+
 
 /* Component SubscribeBtn */
 .subscribe-btn {
@@ -265,7 +276,7 @@ a[href] {
   &__title {
     margin     : 0.5em 0;
     font-weight: normal;
-    text-shadow: 1px 1px 1px black;
+    text-shadow: 1px 1px 0px currentColor;
   }
 }
 
@@ -277,7 +288,7 @@ a[href] {
     display    : inline-block;
     line-height: 0;
     margin     : 0;
-    padding    : 0.75rem 0;
+    padding    : 0.5rem 0;
 
     // &__image {}
   }
@@ -292,7 +303,23 @@ a[href] {
 
 /* MainContent */
 .main-content {
-  h1 {}
+  h1 {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h4 {
+    margin: 1em 0 0 0;
+  }
+
+  ul {
+    list-style: none;
+    padding   : 0;
+    margin    : 0;
+  }
+
+  p {
+    margin: 2em 0;
+  }
 }
 
 /* TMP */
