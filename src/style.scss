@@ -72,7 +72,8 @@ h2 {
 }
 
 /* Link */
-a[href] {
+a[href],
+input[type="submit"] {
   color: var(--link-fg-color);
 
   text-underline-offset: 2px;
@@ -89,6 +90,24 @@ a[href] {
 
 .no-underline {
   text-decoration: none !important;
+}
+
+.skip-menu-btn {
+  position: fixed;
+  top     : -5em;
+  left    : 0;
+  right   : 0;
+  z-index : 10;
+  height  : 3em;
+  padding : 1em;
+
+  text-align      : center;
+  transition      : 1s top;
+  background-color: var(--footer-bg-color);
+
+  &:focus {
+    top: 0;
+  }
 }
 
 /* Layout */
@@ -287,6 +306,7 @@ a[href] {
   font-size      : 1.1em;
   letter-spacing : 0.2px;
   text-decoration: none;
+  border         : none;
 
   transition: .2s box-shadow, .2s transform;
 
