@@ -58,16 +58,35 @@ h2 {
 }
 
 /* Link */
-a[href] {
+a[href],
+input[type=submit] {
   color: var(--link-fg-color);
   text-underline-offset: 2px;
 }
-a[href]:hover, a[href]:focus {
+a[href]:not(:active):hover, a[href]:not(:active):focus,
+input[type=submit]:not(:active):hover,
+input[type=submit]:not(:active):focus {
   --link-fg-color: var(--link-hover-fg-color);
 }
 
 .no-underline {
   text-decoration: none !important;
+}
+
+.skip-menu-btn {
+  position: fixed;
+  top: -5em;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: 3em;
+  padding: 1em;
+  text-align: center;
+  transition: 1s top;
+  background-color: var(--footer-bg-color);
+}
+.skip-menu-btn:focus {
+  top: 0;
 }
 
 /* Layout */
@@ -95,11 +114,13 @@ a[href]:hover, a[href]:focus {
   display: flex;
   flex-direction: row;
   max-width: 100vw;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 @media (min-width: 800px) {
   .layout__news {
     flex-direction: column;
+    overflow: hidden;
   }
 }
 .layout__main {
@@ -139,8 +160,19 @@ a[href]:hover, a[href]:focus {
 .menu__item.is-active a {
   --link-fg-color: var(--menu-fg-active-color);
 }
+.menu__item::after {
+  content: "";
+  display: block;
+  width: 0%;
+  margin-bottom: -0.1rem;
+  border-bottom: 0.1rem solid var(--menu-fg-active-color);
+  transition: 0.5s width;
+}
 .menu__item:hover a, .menu__item:focus a {
   --link-hover-fg-color: var(--menu-fg-active-color);
+}
+.menu__item:hover::after, .menu__item:focus::after {
+  width: 100%;
 }
 
 /* Component Breadcrumbs */
@@ -163,8 +195,13 @@ a[href]:hover, a[href]:focus {
   position: relative;
   margin: 0.9rem 1rem;
 }
-.news:hover {
+.news__wrapper-link {
+  text-decoration: none;
+  transition: 0.3s filter, 0.3s transform, 0.3s color;
+}
+.news__wrapper-link:hover {
   filter: drop-shadow(2px 4px 6px black);
+  transform: scale(1.05);
 }
 .news__date {
   position: absolute;
@@ -203,10 +240,13 @@ a[href]:hover, a[href]:focus {
   font-size: 1.1em;
   letter-spacing: 0.2px;
   text-decoration: none;
+  border: none;
+  transition: 0.2s box-shadow, 0.2s transform;
 }
-.subscribe-btn:hover {
+.subscribe-btn:not(:active):hover, .subscribe-btn:not(:active):focus {
   --link-hover-fg-color: var(--subscribe-btn-fg-color);
   box-shadow: 2px 4px 6px black;
+  transform: scale(1.05);
 }
 .subscribe-btn::after {
   content: " »";
@@ -260,31 +300,151 @@ a[href]:hover, a[href]:focus {
   margin: 2em 0;
 }
 
-/* Component Carousel */
-.carousel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.carousel img {
-  width: 100%;
-  height: auto;
-}
-.carousel__nav {
+/* Component Carousel - Start */
+/*
+  <.anchor id="slide_1" />
+  <.nav href="#slide_1" />
+  <.anchor id="slide_2" />
+  <.nav href="#slide_2" />
+  <.view>
+    <child-img1>
+    <child-img2>
+  </.view>
+*/
+/* Rozloženi prvků */
+.c-layout {
   text-align: center;
+  margin: calc(50% + 2em) 0 2em 0;
 }
-.carousel__nav__item {
+.c-layout__anchor {
+  /* ^ Kotvy pro upevnění pohybu = neskáče obraz při změně cíle (id) */
+  position: fixed;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.c-layout__nav {
+  /* ^ Navigační prvky */
   display: inline-block;
   width: 1rem;
   height: 1rem;
+}
+.c-layout__view {
+  /* ^ Průhled na snímky */
+  display: flex;
+  overflow: hidden;
+  margin: calc(-50% - 2rem) 0 0 0;
+}
+.c-layout__view > * {
+  /* ^ Snímky */
+  display: inline-block;
+  width: 100%;
+  height: auto;
+}
+.c-layout__view > :first-child {
+  /* ^ První snímek */
+  /* Určuje, který snímek je viditelný skrze průhled */
+  margin-left: calc(-100% * (var(--selected) - 1));
+}
+
+/* Vizuální dekorace*/
+.c__nav {
+  /* ^ Navigační prvky */
   border: 0.25rem solid transparent;
   background-clip: content-box;
-  --color: #c0c0c0;
-  --selected-color: #404040;
   background-color: var(--carousel-color);
   border-radius: 50%;
   font-size: 0;
+  background-image: linear-gradient(var(--carousel-select-color), var(--carousel-select-color));
+  background-repeat: no-repeat;
+  background-size: 0.5rem;
+  background-position: calc(var(--selected-nav, 1) * .5rem);
 }
-.carousel__nav__item.selected {
-  --carousel-color: var(--carousel-select-color);
+.c__view > :first-child {
+  /* ^ První snímek */
+  transition: 0.75s cubic-bezier(0.4, 0, 1, 1) margin-left;
 }
+
+/* Přepínaní snímků */
+.c-switch__anchor:nth-of-type(1) + .c-switch__nav {
+  --selected-nav: calc(1 - var(--selected));
+}
+.c-switch__anchor:nth-of-type(2) + .c-switch__nav {
+  --selected-nav: calc(2 - var(--selected));
+}
+.c-switch__anchor:target:nth-of-type(1) ~ .c-switch__view {
+  --selected: 1;
+}
+.c-switch__anchor:target:nth-of-type(2) ~ .c-switch__view {
+  --selected: 2;
+}
+
+/* Animace snímků */
+.c-anim:hover {
+  --a-play-state: paused;
+}
+.c-anim__view, .c-anim {
+  --a: start-s1;
+  animation-name: var(--a);
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-play-state: var(--a-play-state, running);
+}
+.c-anim__anchor:target:nth-of-type(1) ~ .c-anim__view {
+  --a: start-s1;
+}
+.c-anim__anchor:target:nth-of-type(2) ~ .c-anim__view {
+  --a: start-s2;
+}
+
+@keyframes start-s1 {
+  0% {
+    --selected: 1 ;
+  }
+  50% {
+    --selected: 1 ;
+  }
+  51% {
+    --selected: 2 ;
+  }
+  100% {
+    --selected: 2 ;
+  }
+}
+@keyframes start-s2 {
+  0% {
+    --selected: 2 ;
+  }
+  50% {
+    --selected: 2 ;
+  }
+  51% {
+    --selected: 1 ;
+  }
+  100% {
+    --selected: 1 ;
+  }
+}
+@keyframes only-s1 {
+  from {
+    --select: 1 ;
+  }
+  to {
+    --select: 1 ;
+  }
+}
+@keyframes only-s2 {
+  from {
+    --select: 2 ;
+  }
+  to {
+    --select: 2 ;
+  }
+}
+.c__different-image {
+  /* ^ Odlišení obrázku pro dočasné odlišení */
+  filter: contrast(1.3) brightness(1.2) saturate(1.2) hue-rotate(65deg);
+}
+
+/* Component Carousel - End */
