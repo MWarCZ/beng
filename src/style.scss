@@ -77,10 +77,14 @@ a[href] {
 
   text-underline-offset: 2px;
 
-  &:hover,
-  &:focus {
-    --link-fg-color: var(--link-hover-fg-color);
+  &:not(:active) {
+
+    &:hover,
+    &:focus {
+      --link-fg-color: var(--link-hover-fg-color);
+    }
   }
+
 }
 
 .no-underline {
@@ -121,12 +125,13 @@ a[href] {
     display       : flex;
     flex-direction: row;
 
-    max-width: 100vw;
-    overflow : auto;
+    max-width : 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
 
     @media (min-width: $breakpoint) {
       flex-direction: column;
-
+      overflow      : hidden;
     }
   }
 
@@ -180,10 +185,24 @@ a[href] {
       }
     }
 
+    &::after {
+      content: "";
+      display: block;
+      width  : 0%;
+
+      margin-bottom: -0.1rem;
+      border-bottom: 0.1rem solid var(--menu-fg-active-color);
+      transition   : .5s width;
+    }
+
     &:hover,
     &:focus {
       a {
         --link-hover-fg-color: var(--menu-fg-active-color);
+      }
+
+      &::after {
+        width: 100%;
       }
     }
   }
@@ -214,8 +233,14 @@ a[href] {
   // width: 14.75rem;
   margin  : 0.9rem 1rem;
 
-  &:hover {
-    filter: drop-shadow(2px 4px 6px black);
+  &__wrapper-link {
+    text-decoration: none;
+    transition     : 0.3s filter, 0.3s transform, 0.3s color;
+
+    &:hover {
+      filter   : drop-shadow(2px 4px 6px black);
+      transform: scale(1.05);
+    }
   }
 
   &__date {
@@ -263,10 +288,17 @@ a[href] {
   letter-spacing : 0.2px;
   text-decoration: none;
 
-  &:hover {
-    --link-hover-fg-color: var(--subscribe-btn-fg-color);
+  transition: .2s box-shadow, .2s transform;
 
-    box-shadow: 2px 4px 6px black;
+  &:not(:active) {
+
+    &:hover,
+    &:focus {
+      --link-hover-fg-color: var(--subscribe-btn-fg-color);
+
+      box-shadow: 2px 4px 6px black;
+      transform : scale(1.05);
+    }
   }
 
   &::after {
@@ -336,37 +368,230 @@ a[href] {
   }
 }
 
-/* Component Carousel */
-.carousel {
-  position      : relative;
-  display       : flex;
-  flex-direction: column;
+/* Component Carousel - Start */
+/*
+  <.anchor id="slide_1" />
+  <.nav href="#slide_1" />
+  <.anchor id="slide_2" />
+  <.nav href="#slide_2" />
+  <.view>
+    <child-img1>
+    <child-img2>
+  </.view>
+*/
+$cLayout: '.c-layout';
 
-  img {
-    width : 100%;
-    height: auto;
+/// Musí být v html: layout, anchor, nav, view
+/* Rozloženi prvků */
+#{$cLayout} {
+  text-align: center;
+  margin    : calc(50% + 2em) 0 2em 0;
+
+  &__anchor {
+    /* ^ Kotvy pro upevnění pohybu = neskáče obraz při změně cíle (id) */
+    position: fixed;
+    top     : 0;
+    width   : 0;
+    height  : 0;
+    overflow: hidden;
   }
 
   &__nav {
+    /* ^ Navigační prvky */
+    display: inline-block;
+    width  : 1rem;
+    height : 1rem;
+  }
 
-    text-align: center;
+  &__view {
+    /* ^ Průhled na snímky */
+    display : flex;
+    overflow: hidden;
+    margin  : calc(-50% - 2rem) 0 0 0;
 
-    &__item {
-      display        : inline-block;
-      width          : 1rem;
-      height         : 1rem;
-      border         : 0.25rem solid transparent;
-      background-clip: content-box;
+    &>* {
+      /* ^ Snímky */
+      display: inline-block;
+      width  : 100%;
+      height : auto;
+    }
 
-      --color         : #c0c0c0;
-      --selected-color: #404040;
-      background-color: var(--carousel-color);
-      border-radius   : 50%;
-      font-size       : 0;
-
-      &.selected {
-        --carousel-color: var(--carousel-select-color);
-      }
+    &>:first-child {
+      /* ^ První snímek */
+      /* Určuje, který snímek je viditelný skrze průhled */
+      margin-left: calc(-100% * (var(--selected) - 1));
     }
   }
 }
+
+$carousel: '.c';
+
+/// Musí být v html: nav
+/* Vizuální dekorace*/
+#{$carousel} {
+
+  &__nav {
+    /* ^ Navigační prvky */
+    border         : 0.25rem solid transparent;
+    background-clip: content-box;
+
+    background-color: var(--carousel-color);
+    border-radius   : 50%;
+    font-size       : 0;
+
+    background-image   : linear-gradient(var(--carousel-select-color), var(--carousel-select-color));
+    background-repeat  : no-repeat;
+    background-size    : .5rem;
+    background-position: calc(var(--selected-nav, 1) * .5rem);
+  }
+
+  &__view {
+    &>:first-child {
+      /* ^ První snímek */
+      transition: .75s cubic-bezier(0.4, 0, 1, 1) margin-left;
+    }
+  }
+}
+
+$cSwitch: '.c-switch';
+
+/// Musí být v html: anchor, nav, view
+/* Přepínaní snímků */
+#{$cSwitch} {
+
+  &__anchor {
+
+    &:nth-of-type(1) {
+      &+#{$cSwitch}__nav {
+        --selected-nav: calc(1 - var(--selected));
+      }
+    }
+
+    &:nth-of-type(2) {
+      &+#{$cSwitch}__nav {
+        --selected-nav: calc(2 - var(--selected));
+      }
+    }
+
+    &:target {
+      &:nth-of-type(1) {
+
+        // &+#{$cSwitch}__nav,
+        &~#{$cSwitch}__view {
+          --selected: 1;
+        }
+      }
+
+      &:nth-of-type(2) {
+
+        // &+#{$cSwitch}__nav,
+        &~#{$cSwitch}__view {
+          --selected: 2;
+        }
+      }
+
+      // ? Add slide ^ -||- ^
+    }
+  }
+}
+
+$cAnimation: '.c-anim';
+
+/// Musí být v html: root, view, anchor
+/* Animace snímků */
+#{$cAnimation} {
+
+  &:hover {
+    --a-play-state: paused;
+  }
+
+  &__view,
+  & {
+    --a: start-s1;
+
+    animation-name           : var(--a);
+    animation-duration       : 5s;
+    animation-iteration-count: infinite;
+    animation-play-state     : var(--a-play-state, running);
+  }
+
+  &__anchor {
+    &:target {
+      &:nth-of-type(1)~#{$cAnimation}__view {
+        --a: start-s1;
+      }
+
+      &:nth-of-type(2)~#{$cAnimation}__view {
+        --a: start-s2;
+      }
+
+      // ? Add slide ^ -||- ^
+    }
+  }
+
+}
+
+// ? Add slide
+
+@keyframes start-s1 {
+  0% {
+    --selected: 1
+  }
+
+  50% {
+    --selected: 1
+  }
+
+  51% {
+    --selected: 2
+  }
+
+  100% {
+    --selected: 2
+  }
+}
+
+@keyframes start-s2 {
+  0% {
+    --selected: 2
+  }
+
+  50% {
+    --selected: 2
+  }
+
+  51% {
+    --selected: 1
+  }
+
+  100% {
+    --selected: 1
+  }
+}
+
+@keyframes only-s1 {
+  from {
+    --select: 1
+  }
+
+  to {
+    --select: 1
+  }
+}
+
+@keyframes only-s2 {
+  from {
+    --select: 2
+  }
+
+  to {
+    --select: 2
+  }
+}
+
+.c__different-image {
+  /* ^ Odlišení obrázku pro dočasné odlišení */
+  filter: contrast(1.3) brightness(1.2) saturate(1.2) hue-rotate(65deg);
+}
+
+/* Component Carousel - End */
